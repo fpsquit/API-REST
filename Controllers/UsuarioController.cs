@@ -1,11 +1,11 @@
 using APIREST.Data;
 using APIREST.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIREST.Controllers
 {
-
-    [ApiController]
+[ApiController]
 [Route ("api/usuario")]
  
  public class UsuarioController : ControllerBase 

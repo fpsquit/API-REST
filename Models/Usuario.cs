@@ -18,5 +18,6 @@ namespace APIREST.Models
         [Required(ErrorMessage = "O Campo de Cargo é obrigatório")]
         public string Cargo { get; set; }
 
+
     }
 }
