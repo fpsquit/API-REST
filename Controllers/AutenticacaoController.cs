@@ -6,6 +6,7 @@ using APIREST.Data;
 using APIREST.Models;
 using APIREST.Services;
 using Microsoft.AspNetCore.Mvc;
+using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace APIREST.Controllers
 {
@@ -31,8 +32,8 @@ namespace APIREST.Controllers
                 return BadRequest(ModelState);
             }
 
-            var usuarioAutenticado = _context.Usuario.FirstOrDefault(u => u.Nome == usuario.Nome && u.Senha == usuario.Senha);
-            if (usuarioAutenticado != null)
+            var usuarioAutenticado = _context.Usuario.FirstOrDefault(u => u.Nome == usuario.Nome);
+            if (usuarioAutenticado != null && BCryptNet.Verify(usuario.Senha, usuarioAutenticado.Senha))
             {
                 var token = _tokenService.GeradorToken(usuarioAutenticado);
                 return Ok(token);

@@ -4,6 +4,8 @@ using APIREST.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using BCryptNet = BCrypt.Net.BCrypt;
+
 
 namespace APIREST.Controllers
 {
@@ -26,16 +28,24 @@ namespace APIREST.Controllers
         public IActionResult RegistrarUsuario([FromBody] CreateUsuarioDTO usuarioDTO)
         {
             Usuario usuario = _mapper.Map<Usuario>(usuarioDTO);
+            usuario.Senha = BCryptNet.HashPassword(usuario.Senha);
             _context.Usuario.Add(usuario);
             _context.SaveChanges();
+
+            ReadUsuarioDTO retorno = _mapper.Map<ReadUsuarioDTO>(usuario);
+
             return CreatedAtAction(nameof(RecuperarUsuarioPorId),
-                new { id = usuario.Id }, usuario);
+                new { id = usuario.Id }, retorno);
+
+
         }
 
         [HttpGet]
-        public IEnumerable<Usuario> RecuperarUsuario()
+        public IEnumerable<ReadUsuarioDTO> RecuperarUsuario()
         {
-            return _context.Usuario;
+            var usuarios = _context.Usuario;
+            var usuariosDTO = _mapper.Map<IEnumerable<ReadUsuarioDTO>>(usuarios);
+            return usuariosDTO;
         }
 
         [HttpGet("{id}")]
@@ -47,11 +57,10 @@ namespace APIREST.Controllers
             {
                 ReadUsuarioDTO usuarioDTO = _mapper.Map<ReadUsuarioDTO>(usuario);
                 return Ok(usuarioDTO);
-            } 
+            }
             return NotFound();
 
         }
-
 
 
 
