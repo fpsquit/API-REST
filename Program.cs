@@ -1,6 +1,7 @@
 using System.Text;
 using APIREST;
 using APIREST.Data;
+using APIREST.Profiles;
 using APIREST.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,8 @@ var connectionString = builder.Configuration.GetConnectionString("ApiConnection"
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 options.UseNpgsql(connectionString));
+
+builder.Services.AddAutoMapper(typeof(UsuarioProfile));
 
 builder.Services.AddTransient<TokenService>();
 
