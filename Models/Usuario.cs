@@ -15,7 +15,7 @@ namespace APIREST.Models
         [StringLength(256, ErrorMessage = "O {0} deve ter pelo menos {2} caracteres de comprimento.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         public string Senha { get; set; }
-        public string Cargo { get; set; }
+        public string? Cargo { get; set; }
 
 
     }

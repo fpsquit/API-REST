@@ -17,7 +17,7 @@ namespace APIREST.Data.DTOS.UsuarioDTOS
     [DataType(DataType.Password)]
     public string Senha { get; set; }
 
-    public string Cargo { get; set; }
+    public string? Cargo { get; set; }
 
     }
 }
