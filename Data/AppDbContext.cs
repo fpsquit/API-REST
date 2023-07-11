@@ -11,6 +11,7 @@ namespace APIREST.Data
         }
 
         public DbSet<Usuario> Usuario {get; set;}
+        public DbSet<Pedido> Pedido {get; set;}
           
 
     }

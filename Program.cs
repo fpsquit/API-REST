@@ -4,7 +4,6 @@ using APIREST.Data;
 using APIREST.Profiles;
 using APIREST.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -19,6 +18,7 @@ options.UseNpgsql(connectionString));
 builder.Services.AddAutoMapper(typeof(UsuarioProfile));
 
 builder.Services.AddTransient<TokenService>();
+
 
 var key = Encoding.ASCII.GetBytes(Settings.Secret);
 

@@ -1,12 +1,13 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace APIREST.Models
 {
     public class Usuario
     {
 
-        [Key]
-        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, Column(Order = 20)]
         public int Id { get; set; }
         [Required(ErrorMessage = "O Campo de Nome é obrigatório")]
         public string Nome { get; set; }
