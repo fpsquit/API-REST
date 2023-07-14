@@ -6,6 +6,7 @@ using APIREST.Helpers;
 using Microsoft.EntityFrameworkCore;
 using APIREST.Data.DTOS.PedidoDTOS;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace APIREST.Controllers
 {
@@ -24,6 +25,7 @@ namespace APIREST.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CriarPedido([FromBody] CreatePedidoDTO pedidoDTO)
         {
@@ -55,7 +57,7 @@ namespace APIREST.Controllers
 
                 var jsonString = await response.Content.ReadAsStringAsync();
                 ReceitaWSModel resultadoWS = JsonConvert.DeserializeObject<ReceitaWSModel>(jsonString);
-                
+
                 if (resultadoWS != null)
                 {
                     var novoPedido = _mapper.Map<Pedido>(pedidoDTO);
@@ -68,7 +70,7 @@ namespace APIREST.Controllers
                     return Ok(novoPedido);
                 }
 
-               return StatusCode(500, "Falha ao obter dados da ReceitaWS: resultado nulo");
+                return StatusCode(500, "Falha ao obter dados da ReceitaWS: resultado nulo");
 
             }
 
@@ -76,6 +78,7 @@ namespace APIREST.Controllers
 
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> ObterPedidos(int skip = 0, int take = 25)
         {
@@ -84,6 +87,7 @@ namespace APIREST.Controllers
             return Ok(pedidosDTO);
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> ObterPedidosPorId(int id)
         {
@@ -96,10 +100,11 @@ namespace APIREST.Controllers
 
             var pedidoDTO = _mapper.Map<ReadPedidoDTO>(pedido);
 
-            return Ok(pedidoDTO.Resultado);
+            return Ok(pedidoDTO);
 
         }
 
+        [Authorize]
         [HttpGet("cnpj/{cnpj}")]
         public async Task<IActionResult> ObeterPedidosPorCnpj(string cnpj)
         {
@@ -113,14 +118,30 @@ namespace APIREST.Controllers
 
             var pedidoDTO = _mapper.Map<ReadPedidoDTO>(pedido);
 
-            return Ok(pedidoDTO.Resultado);
+            return Ok(pedidoDTO);
         }
 
-        [HttpDelete("deletar/{cnpj}")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletarPedidoPorId(int id)
+        {
+            var pedido = await _context.Pedido.FindAsync(id);
+            if (pedido == null)
+            {
+                return NotFound("Pedido não encontrado");
+            }
+
+            _context.Pedido.Remove(pedido);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [Authorize]
+        [HttpDelete("cnpj/{cnpj}")]
 
         public async Task<IActionResult> DeletarPedidoPorCnpj(string cnpj)
         {
-            var pedido = await _context.Pedido.FindAsync(cnpj);
+            var pedido = await _context.Pedido.FirstOrDefaultAsync(p => p.CNPJ == cnpj);
 
             if (pedido == null)
             {
@@ -130,7 +151,7 @@ namespace APIREST.Controllers
             _context.Pedido.Remove(pedido);
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return NoContent();
         }
 
 
