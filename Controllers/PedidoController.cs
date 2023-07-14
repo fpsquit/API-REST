@@ -55,19 +55,24 @@ namespace APIREST.Controllers
 
                 var jsonString = await response.Content.ReadAsStringAsync();
                 ReceitaWSModel resultadoWS = JsonConvert.DeserializeObject<ReceitaWSModel>(jsonString);
+                
+                if (resultadoWS != null)
+                {
+                    var novoPedido = _mapper.Map<Pedido>(pedidoDTO);
+                    novoPedido.CNPJ = cnpjSemPontos;
+                    novoPedido.Resultado = resultadoWS;
 
+                    _context.Pedido.Add(novoPedido);
+                    await _context.SaveChangesAsync();
 
-                var novoPedido = _mapper.Map<Pedido>(pedidoDTO);
-                novoPedido.CNPJ = cnpjSemPontos;
-                novoPedido.Resultado = resultadoWS;
+                    return Ok(novoPedido);
+                }
 
-                _context.Pedido.Add(novoPedido);
-                await _context.SaveChangesAsync();
-                return Ok(novoPedido);
+               return StatusCode(500, "Falha ao obter dados da ReceitaWS: resultado nulo");
 
             }
 
-            return BadRequest($"Falha ao acessar dados da ReceitaWS: {response.StatusCode}");
+            return StatusCode(500, $"Falha ao acessar dados da ReceitaWS: {response.StatusCode}");
 
         }
 
