@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using APIREST.Data;
+using APIREST.Data.DTOS.UsuarioDTOS;
 using APIREST.Models;
 using APIREST.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -25,18 +26,19 @@ namespace APIREST.Controllers
         }
 
         [HttpPost]
-        public IActionResult Autenticar([FromBody] Usuario usuario)
+        public IActionResult Autenticar([FromBody] LoginUsuarioDTO loginDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var usuarioAutenticado = _context.Usuario.FirstOrDefault(u => u.Nome == usuario.Nome);
-            if (usuarioAutenticado != null && BCryptNet.Verify(usuario.Senha, usuarioAutenticado.Senha))
+            var usuarioAutenticado = _context.Usuario.FirstOrDefault(u => u.Nome == loginDTO.Nome);
+            if (usuarioAutenticado != null && BCryptNet.Verify(loginDTO.Senha, usuarioAutenticado.Senha))
             {
                 var token = _tokenService.GeradorToken(usuarioAutenticado);
-                return Ok(token);
+                
+                return Ok(new { Token = token });
             }
 
             return Unauthorized("Credenciais inválidas.");

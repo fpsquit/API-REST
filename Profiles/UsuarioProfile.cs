@@ -1,6 +1,7 @@
 using APIREST.Data.DTOS.UsuarioDTOS;
 using APIREST.Models;
 using AutoMapper;
+using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace APIREST.Profiles
 {
@@ -10,7 +11,13 @@ namespace APIREST.Profiles
         {
             CreateMap<CreateUsuarioDTO, Usuario>();
             CreateMap<Usuario, ReadUsuarioDTO>();
-            CreateMap<UpdateUsuarioDTO, Usuario>();
+            CreateMap<UpdateUsuarioDTO, Usuario>()
+
+            .ForMember(dest => dest.Nome, opt => opt.MapFrom((src, dest) => src.Nome != null ? src.Nome : dest.Nome))
+            .ForMember(dest => dest.Cargo, opt => opt.MapFrom((src, dest) => src.Cargo != null ? src.Cargo : dest.Cargo))
+            .ForMember(dest => dest.Senha, opt => opt.MapFrom((src, dest) => src.Senha != null ? BCryptNet.HashPassword(src.Senha) : dest.Senha));
+            
+            CreateMap<LoginUsuarioDTO, Usuario>();
         }
 
     }

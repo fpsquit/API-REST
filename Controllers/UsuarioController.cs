@@ -41,9 +41,9 @@ namespace APIREST.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<ReadUsuarioDTO> RecuperarUsuario()
+        public IEnumerable<ReadUsuarioDTO> RecuperarUsuario(int skip = 0, int take = 25)
         {
-            var usuarios = _context.Usuario;
+            var usuarios = _context.Usuario.Skip(skip).Take(take);
             var usuariosDTO = _mapper.Map<IEnumerable<ReadUsuarioDTO>>(usuarios);
             return usuariosDTO;
         }
@@ -62,10 +62,37 @@ namespace APIREST.Controllers
 
         }
 
+        [HttpPatch("atualizar/{id}")]
+        public IActionResult AtualizarParcialmenteUsuario(int id, [FromBody] UpdateUsuarioDTO usuarioDTO)
+        {
+            var usuario = _context.Usuario.FirstOrDefault(u => u.Id == id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
 
+            _mapper.Map(usuarioDTO, usuario);
 
+            _context.SaveChanges();
 
+            return NoContent();
+        }
+        
+        [HttpDelete("excluir/{id}")]
+        public IActionResult ExcluirUsuario(int id)
+        {
+            var usuario = _context.Usuario.FirstOrDefault(u => u.Id == id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            _context.Usuario.Remove(usuario);
+            _context.SaveChanges();
+
+            return NoContent(); 
+
+        }
 
     }
-
 }
