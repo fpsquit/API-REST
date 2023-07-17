@@ -1,18 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace APIREST.Helpers
 {
     public class PedidoHelper
     {
-        public string RemoverPontosCnpj(string cnpj)
+        public static string RemoverPontosCnpj(string cnpj)
         {
             return new string(cnpj.Where(char.IsDigit).ToArray());
         }
 
-        public bool ValidarCnpj(string cnpj)
+        public static bool ValidarCnpj(string cnpj)
         {
             if (String.IsNullOrWhiteSpace(cnpj))
             {

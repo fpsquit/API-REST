@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using APIREST.Helpers;
 using Microsoft.EntityFrameworkCore;
-using APIREST.Data.DTOS.PedidoDTOS;
+using APIREST.Models.DTOS.PedidoDTOS;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 
@@ -31,11 +31,9 @@ namespace APIREST.Controllers
         {
             var cnpj = pedidoDTO.CNPJ;
 
-            var pedidoHelper = new PedidoHelper();
+            var cnpjSemPontos = PedidoHelper.RemoverPontosCnpj(cnpj);
 
-            var cnpjSemPontos = pedidoHelper.RemoverPontosCnpj(cnpj);
-
-            var cnpjValido = pedidoHelper.ValidarCnpj(cnpjSemPontos);
+            var cnpjValido = PedidoHelper.ValidarCnpj(cnpjSemPontos);
 
             if (!cnpjValido)
             {
