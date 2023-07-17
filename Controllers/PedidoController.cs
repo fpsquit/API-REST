@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace APIREST.Controllers
 {
-
+    [Authorize]
     [ApiController]
     [Route("api/pedido")]
     public class PedidoController : ControllerBase
@@ -25,7 +25,7 @@ namespace APIREST.Controllers
             _mapper = mapper;
         }
 
-        [Authorize]
+
         [HttpPost]
         public async Task<IActionResult> CriarPedido([FromBody] CreatePedidoDTO pedidoDTO)
         {
@@ -78,7 +78,7 @@ namespace APIREST.Controllers
 
         }
 
-        [Authorize]
+
         [HttpGet]
         public async Task<IActionResult> ObterPedidos(int skip = 0, int take = 25)
         {
@@ -87,7 +87,7 @@ namespace APIREST.Controllers
             return Ok(pedidosDTO);
         }
 
-        [Authorize]
+
         [HttpGet("{id}")]
         public async Task<IActionResult> ObterPedidosPorId(int id)
         {
@@ -104,7 +104,7 @@ namespace APIREST.Controllers
 
         }
 
-        [Authorize]
+
         [HttpGet("cnpj/{cnpj}")]
         public async Task<IActionResult> ObeterPedidosPorCnpj(string cnpj)
         {
@@ -136,7 +136,7 @@ namespace APIREST.Controllers
             return NoContent();
         }
 
-        [Authorize]
+
         [HttpDelete("cnpj/{cnpj}")]
 
         public async Task<IActionResult> DeletarPedidoPorCnpj(string cnpj)
