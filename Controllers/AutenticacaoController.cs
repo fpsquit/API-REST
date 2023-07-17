@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using APIREST.Data;
-using APIREST.Data.DTOS.UsuarioDTOS;
-using APIREST.Models;
+using APIREST.Models.DTOS.PedidoDTOS;
 using APIREST.Services;
 using Microsoft.AspNetCore.Mvc;
 using BCryptNet = BCrypt.Net.BCrypt;
@@ -37,7 +32,7 @@ namespace APIREST.Controllers
             if (usuarioAutenticado != null && BCryptNet.Verify(loginDTO.Senha, usuarioAutenticado.Senha))
             {
                 var token = _tokenService.GeradorToken(usuarioAutenticado);
-                
+
                 return Ok(new { Token = token });
             }
 

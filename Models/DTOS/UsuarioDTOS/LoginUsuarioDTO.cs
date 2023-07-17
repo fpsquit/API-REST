@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace APIREST.Data.DTOS.UsuarioDTOS
+namespace APIREST.Models.DTOS.PedidoDTOS
 {
     public class LoginUsuarioDTO
     {

@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using APIREST.Models;
-
-namespace APIREST.Data.DTOS.PedidoDTOS
+namespace APIREST.Models.DTOS.PedidoDTOS
 {
     public class ReadPedidoDTO
     {

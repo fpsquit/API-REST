@@ -1,8 +1,7 @@
 using APIREST.Data;
-using APIREST.Data.DTOS.UsuarioDTOS;
 using APIREST.Models;
+using APIREST.Models.DTOS.PedidoDTOS;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using BCryptNet = BCrypt.Net.BCrypt;
 
@@ -77,7 +76,7 @@ namespace APIREST.Controllers
 
             return NoContent();
         }
-        
+
         [HttpDelete("excluir/{id}")]
         public IActionResult ExcluirUsuario(int id)
         {
@@ -90,7 +89,7 @@ namespace APIREST.Controllers
             _context.Usuario.Remove(usuario);
             _context.SaveChanges();
 
-            return NoContent(); 
+            return NoContent();
 
         }
 
